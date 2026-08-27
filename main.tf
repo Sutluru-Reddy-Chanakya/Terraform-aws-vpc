@@ -27,7 +27,7 @@ resource "aws_subnet" "main" {
   tags = merge(
     local.common_tags, {
         Name ="${var.project}-${var.env}-public ${local.az_names[count.index]}"
-    }
+    }, 
     var.public_subnet_tags
   )
 }
