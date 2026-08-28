@@ -128,7 +128,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet[0].nat.id                # we are creating in us-east -1a AZ
+  subnet_id     = aws_subnet.public[0].nat.id                # we are creating in us-east -1a AZ
 
   tags =  merge(
           local.common_tags , {
