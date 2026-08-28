@@ -154,3 +154,24 @@ resource "aws_route" "db" {
   nat_gateway_id = aws_nat_gateway.main.id
 }
 
+resource "aws_route_table_association" "public" {
+  count = length(var.public_subnet)
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
+
+
+
+resource "aws_route_table_association" "private" {
+  count = length(var.private_subnet)
+  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = aws_route_table.private.id
+}
+
+
+
+resource "aws_route_table_association" "db" {
+  count = length(var.db_subnet)
+  subnet_id      = aws_subnet.db[count.index].id
+  route_table_id = aws_route_table.db.id
+}
