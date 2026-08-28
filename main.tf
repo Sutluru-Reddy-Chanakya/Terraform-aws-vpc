@@ -136,7 +136,7 @@ resource "aws_nat_gateway" "nat" {
           },
           var.nat_gateway_tags
   )
-depends_on = [aws_internet_gateway.nat]
+depends_on = [aws_internet_gateway.main.id]
 }
 
 
