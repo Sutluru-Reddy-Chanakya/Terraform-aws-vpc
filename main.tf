@@ -17,7 +17,7 @@ resource "aws_internet_gateway" "gw" {
 
 #public_subnet
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "public" {
   count = length(var.public_subnet)
   vpc_id     = aws_vpc.main.id
   cidr_block = var.public_subnet[count.index]
@@ -34,7 +34,7 @@ resource "aws_subnet" "main" {
 
  #private_subnet
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "private" {
   count = length(var.private_subnet)
   vpc_id     = aws_vpc.main.id
   cidr_block = var.private_subnet[count.index]
@@ -52,7 +52,7 @@ resource "aws_subnet" "main" {
 
 #db_subnet
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "db" {
   count = length(var.db_subnet)
   vpc_id     = aws_vpc.main.id
   cidr_block = var.db_subnet[count.index]
@@ -74,7 +74,7 @@ resource "aws_route_table" "public" {
 
   tags = merge(
           local.common_tags , {
-            Name= "${var.project}-${var.env}}-public"
+            Name= "${var.project}-${var.env}-public"
           },
           var.public_route_table_tags
   )
@@ -87,7 +87,7 @@ resource "aws_route_table" "private" {
 
   tags = merge(
           local.common_tags , {
-            Name= "${var.project}-${var.env}}-private"
+            Name= "${var.project}-${var.env}-private"
           },
           var.private_route_table_tags
   )
@@ -100,7 +100,7 @@ resource "aws_route_table" "db" {
 
   tags = merge(
           local.common_tags , {
-            Name= "${var.project}-${var.env}}-db"
+            Name= "${var.project}-${var.env}-db"
           },
           var.db_subnet
   )
