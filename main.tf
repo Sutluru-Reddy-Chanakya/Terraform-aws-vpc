@@ -105,3 +105,52 @@ resource "aws_route_table" "db" {
           var.private_db_tags
   )
 }
+
+
+
+resource "aws_route" "public" {
+  route_table_id            = aws_route_table.public.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id
+}
+
+resource "aws_eip" "nat" {
+  domain = "vpc"
+  tags = merge(
+          local.common_tags , {
+            Name= "${var.project}-${var.env}-nat"
+          },
+          var.eip_tags
+  )
+}
+
+
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet[0].nat.id                # we are creating in us-east -1a AZ
+
+  tags =  merge(
+          local.common_tags , {
+            Name= "${var.project}-${var.env}"
+          },
+          var.nat_gateway_tags
+  )
+depends_on = [aws_internet_gateway.nat]
+}
+
+
+
+
+resource "aws_route" "private" {
+  route_table_id            = aws_route_table.private.id
+  destination_cidr_block    = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.main.id
+}
+
+resource "aws_route" "db" {
+  route_table_id            = aws_route_table.db
+  destination_cidr_block    = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.main.id
+}
+
