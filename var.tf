@@ -85,6 +85,8 @@ variable "db_route_table_tags" {
 }
 
 
+
+
 variable "eip_tags" {
     type = map
     default = {}
@@ -98,3 +100,9 @@ variable "nat_gateway_tags" {
     default = {}
 }
 
+
+variable "is_peering_requried" {
+    default = false 
+    type = bool
+  
+}
