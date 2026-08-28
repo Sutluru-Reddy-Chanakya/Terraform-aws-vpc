@@ -102,6 +102,6 @@ resource "aws_route_table" "db" {
           local.common_tags , {
             Name= "${var.project}-${var.env}-db"
           },
-          var.db_subnet
+          var.private_db_tags
   )
 }
